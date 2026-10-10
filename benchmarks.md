@@ -28,7 +28,20 @@ Final scene (about 485 spheres, materials vary), 1200x675, 100 spp, max depth: 5
 
 | Build   | Time (s) | Speedup |
 |---------|---------:|--------:|
-| -O0     |  4117.27 |   1.00× |
+| -O0     |  4117.27 |   1.00x |
 | -O3     |   188.74 |         |
 
 ### 2 - Thread scaling (denominator as -O3 Release, Running 1 Thread)
+
+| Threads | Best of 3 (s)  | Speedup |
+|---------|----------------|---------|
+| 1 | 189.12 | 1.00x |
+| 2 | 97.97 | 1.93x |
+| 4 | 55.27 | 3.42x |
+| 8 | 46.52 | 4.07x |
+| 16 | 46.75 | 4.05x |
+
+Serial fraction (write/total, 1 thread): 0.10%
+Amdahl limit on 8 identical cores: 7.95x
+4 threads: 3.42x = 86% of perfect (Performance-cores only)
+Threads 5-8 added 0.64×  ->  one Efficiency-core = about 0.19 of a P-core
