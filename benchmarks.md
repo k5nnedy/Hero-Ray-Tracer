@@ -13,12 +13,14 @@ Final scene (about 485 spheres, materials vary), 1200x675, 100 spp, max depth: 5
 
 | Date       | Commit Hash   | Build         | Threads| spp | Time(s)   | Notes                       |
 |------------|---------------|---------------|-------:|----:|----------:|-----------------------------|
-| 2026-08-04 |   <25cc2eb>   | Release (-O3) |      1 | 100 |  188.74   | baseline                    |
-| 2026-08-05 |   <25cc2eb>   | Release (-O0) |      1 | 100 |  4117.27  | baseline                    |
-| 2026-08-08 |   <103a64f>   | Release (-O3) |      1 | 100 |  322.20   | framebuffer (on battery — excluded from analysis) |
-| 2026-08-08 |   <103a64f>   | Release (-O3) |      1 | 100 |  187.93   |  framebuffer addition       |
-| 2026-08-09 |   <4d5734f>   | Release (-O3) |      1 | 100 |  190.38   | RNG thread-safe addition (new baseline)   |
-| 2026-08-08 |   <af5a5ad>   | Release (-O3) |      1 | 100 |  186.447   |  RNG fully thread safe (urd was not thread local for previous run)       |
+| 2026-08-04 |   25cc2eb     | Release (-O3) |      1 | 100 |  188.74   | baseline                    |
+| 2026-08-05 |   25cc2eb     | Release (-O0) |      1 | 100 |  4117.27  | baseline                    |
+| 2026-08-08 |   103a64f     | Release (-O3) |      1 | 100 |  322.20   | framebuffer (on battery — excluded from analysis) |
+| 2026-08-08 |   103a64f     | Release (-O3) |      1 | 100 |  187.93   |  framebuffer addition       |
+| 2026-08-09 |   4d5734f     | Release (-O3) |      1 | 100 |  190.38   | RNG thread-safe addition (new baseline)   |
+| 2026-08-08 |   af5a5ad     | Release (-O3) |      1 | 100 |  186.45   |  RNG fully thread safe (urd was not thread local for previous run)       |
+| 2026-10-09 |   b2882e3     | Release (-O3) |      1 | 100 |  189.35   | Multithreaded code ran with only one thread |
+| 2026-10-09 |   b2882e3     | Release (-O3) |      8 | 100 |  47.49    | First multithreaded run (compute 47.28 + write 0.20) |
 
 ## Experiments
 
