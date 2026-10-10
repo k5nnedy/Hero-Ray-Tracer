@@ -18,7 +18,7 @@ Final scene (about 485 spheres, materials vary), 1200x675, 100 spp, max depth: 5
 | 2026-08-08 |   <103a64f>   | Release (-O3) |      1 | 100 |  322.20   | framebuffer (on battery — excluded from analysis) |
 | 2026-08-08 |   <103a64f>   | Release (-O3) |      1 | 100 |  187.93   |  framebuffer addition       |
 | 2026-08-09 |   <4d5734f>   | Release (-O3) |      1 | 100 |  190.38   | RNG thread-safe addition (new baseline)   |
-| 2026-08-08 |   <103a64f>   | Release (-O3) |      1 | 100 |  186.447   |  RNG fully thread safe (urd was not thread local for previous run)       |
+| 2026-08-08 |   <af5a5ad>   | Release (-O3) |      1 | 100 |  186.447   |  RNG fully thread safe (urd was not thread local for previous run)       |
 
 ## Experiments
 
@@ -29,4 +29,4 @@ Final scene (about 485 spheres, materials vary), 1200x675, 100 spp, max depth: 5
 | -O0     |  4117.27 |   1.00× |
 | -O3     |   188.74 |         |
 
-### 2 - Thread scaling (denominator as -03 Release, Running 1 Thread)
+### 2 - Thread scaling (denominator as -O3 Release, Running 1 Thread)

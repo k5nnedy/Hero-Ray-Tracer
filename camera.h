@@ -14,6 +14,7 @@ public:
     int     image_width         = 100;  // Rendered image width pixel count
     int     samples_per_pixel   = 10;   // Count of random samples per pixel
     int     max_depth           = 10;   // Maximum number of ray bounces into scene
+    int     threads             = 0;    // 0 means to use all cores
 
     double  vfov        = 90;              // Vertical view angle (field of view)
     point3  lookfrom    = point3(0,0,0);   // The point camera is looking from (origin)
@@ -31,18 +32,37 @@ public:
 
         auto t0 = std::chrono::steady_clock::now();
 
-        for (int j = 0; j < image_height; j++) {
-            std::clog <<"\rScanlines remaining: " << (image_height - j) << ' ' << std::flush;
-            for (int i = 0; i < image_width; i++) {
-                color pixel_color(0,0,0);
-                for (int sample = 0; sample < samples_per_pixel; sample++) {
-                    ray r = get_ray(i, j);
-                    pixel_color += ray_color(r, max_depth, world);
-                }
-                frambuffer[j * image_width + i] = pixel_samples_scale * pixel_color;
-            }
-        }
+        int nthreads = (threads > 0) ? threads : int(std::thread::hardware_concurrency());
+        if (nthreads < 1) nthreads = 1;
 
+        std::atomic<int> next_row{0};
+        std::atomic<int> rows_done{0};
+
+        auto worker = [&]() {
+            while (true)
+            {
+                int j = next_row.fetch_add(1);
+                if (j >= image_height)return;
+
+                for (int i = 0; i < image_width; i++) {
+                    color pixel_color(0,0,0);
+                    for (int sample = 0; sample < samples_per_pixel; sample++) 
+                        pixel_color += ray_color(get_ray(i, j), max_depth, world);
+                    frambuffer[j * image_width + i] = pixel_samples_scale * pixel_color;
+                }
+                int done = rows_done.fetch_add(1) + 1;
+                if (done % 25 == 0 || done == image_height)
+                    std::clog << "\rRows Done: " << done << '/' << image_height << std::flush;
+            }
+        };
+        
+        std::vector<std::thread> pool;      //thread pool
+        for (int t = 0; t < nthreads; t++)
+            pool.emplace_back(worker);      // hire workers
+
+        for(auto& th : pool)
+            th.join();                      //wait until workers are done (join them)
+    
         auto t1 = std::chrono::steady_clock::now();
 
         std::cout<< "P3\n" << image_width << ' ' << image_height << "\n255\n";

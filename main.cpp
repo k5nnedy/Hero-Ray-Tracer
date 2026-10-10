@@ -7,7 +7,7 @@
 #include "sphere.h"
 
 
-int main() {
+int main(int argc, char* argv[]) {
 
     // World
     hittable_list world;
@@ -68,7 +68,8 @@ int main() {
     // Aperture setup:
     cam.defocus_angle       = 0.6;
     cam.focus_dist          = 10.0;
-
+    cam.threads = (argc > 1) ? std::atoi(argv[1]) : 0;
     cam.render(world);
+    
     
 }
