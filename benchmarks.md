@@ -41,7 +41,7 @@ Final scene (about 485 spheres, materials vary), 1200x675, 100 spp, max depth: 5
 | 8 | 46.52 | 4.07x |
 | 16 | 46.75 | 4.05x |
 
-Serial fraction (write/total, 1 thread): 0.10%
+Serial fraction (write/total), 1 thread: 0.10%
 Amdahl limit on 8 identical cores: 7.95x
 4 threads: 3.42x = 86% of perfect (Performance-cores only)
-Threads 5-8 added 0.64×  ->  one Efficiency-core = about 0.19 of a P-core
+Threads 5-8 added 0.64×  ->  one Efficiency-core = about 0.20 of 1 P-core
