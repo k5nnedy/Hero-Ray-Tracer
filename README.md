@@ -2,11 +2,11 @@
 
 A multithreaded CPU path tracer in C++17. The renderer is an extension of and follows [*Ray Tracing in One Weekend*](https://raytracing.github.io/books/RayTracingInOneWeekend.html). Optimizing it, parallelizing it, benchmarking it, and explaining the results are my own work on top of the book.
 
-**Results:** multithreading cuts the book's final scene from 189 s to 46.5 s on an Apple M2 (4.07x speedup). If we are counting the compiler optimization as well, it renders 88.5x faster than the original unoptimized build that took 68 minutes.
+**Results:** multithreading cuts the book's final scene from 189s to 46.5s on an Apple M2 (4.07x speedup). If counting the compiler optimization as well, it renders 88.5x faster than the original unoptimized build that took 68 minutes.
 
 ![Final render: a field of small random spheres around three large spheres made of glass, diffuse material, and metal](docs/hero.png)
 
-*Hero Settings: 1200x675 pixels, 500 samples per pixel
+*Hero Settings: 1200x675 pixels, 500 samples per pixel.
  Rendered in 240 seconds on 8 threads. The original unoptimized compiler, single-threaded build would need an estimated 5.7 hours (this is because render time grows linear with samples per pixel).*
 
 ## Results
@@ -32,7 +32,7 @@ A multithreaded CPU path tracer in C++17. The renderer is an extension of and fo
 | 16 | 46.75 | 4.05x |
 
 - Up to 4 threads, each thread gets its own performance core. 2 threads reach 97% of perfect scaling. While 4 threads reached 86%.
-- Runs with 5–8 threads include efficiency cores, which add only 0.64x together. In this measurement a thread is worth roughly 1/5 of a performance core.
+- Runs with 5–8 threads include efficiency cores, which add only 0.64x together. In this measurement an efficiency core is worth roughly 1/5 of a performance core.
 - 16 threads perform the same as 8. Since there are only 8 cores, the extra threads just take turns.
 - Writing the image isn't the bottleneck. It's the only step that can't run in parallel, and it takes 0.1% of the single-thread runtime. By Amdahl's law, that alone would still allow 7.95x speedup on 8 identical cores.
 
@@ -81,7 +81,7 @@ inline double random_double() {
 }
 ```
 
-The main thread calls it first, while building the scene, so it always gets seed 0. Every run now renders the identical sphere layout and this is important because we need to keep benchmarks comparable across all runs. Worker threads get seeds 1, 2, 3, and so on, so each has its own random stream and rows next to each other don't repeat.
+The main thread calls it first, while building the scene, so it always gets seed 0. Every run now renders the identical sphere layout and this is important because I needed to keep benchmarks comparable across all runs. Worker threads get seeds 1, 2, 3, and so on, so each has its own random stream and rows next to each other don't repeat.
 
 ## Verification
 
@@ -92,11 +92,11 @@ The main thread calls it first, while building the scene, so it always gets seed
 
 - **Optimized build:** CMake Release (`-O3 -DNDEBUG`), confirmed in the flags actually passed to the compiler, not just the CMake setting.
 - **Timer:** `std::chrono::steady_clock`, a monotonic clock that is never adjusted mid-run the way the system clock can be. Rendering and file writing are timed separately.
-- **Three runs per thread count, fastest run kept.** The fastest run is the cleanest measurement. Rounds go 1, 2, 4, 8, 16 threads and then repeat, so the CPU warming up affects every thread count equally, with 60s of rest between each run.
+- **Three runs per thread count, fastest run kept.** The fastest run is the cleanest measurement. I kept the fastest run since background activity can only slow a run down. Rounds go 1, 2, 4, 8, 16 threads and then repeat, so the CPU warming up affects every thread count equally, with 60s of rest between each run.
 - **Controlled machine:** I made sure my M2 was plugged in, other apps closed, blocked sleep with `caffeinate`. One run early on battery power came out 71% slower; it stays in the log, marked as excluded.
 - **Traceable results:** I traced each measurement by saving the commit that produced it. The raw data is in [`bench/scaling.csv`](bench/scaling.csv), and the full log is in [`benchmarks.md`](benchmarks.md).
 
-**Machine:** MacBook Air, Apple M2 (4 performance + 4 efficiency cores), 8 GB RAM (sad ik).
+**Machine:** MacBook Air, Apple M2 (4 performance + 4 efficiency cores), 8 GB RAM.
 
 ## How to Build and Run
 
