@@ -21,7 +21,7 @@ Final scene (about 485 spheres, materials vary), 1200x675, 100 spp, max depth: 5
 | 2026-08-08 |   af5a5ad     | Release (-O3) |      1 | 100 |  186.45   |  RNG fully thread safe (urd was not thread local for previous run)       |
 | 2026-10-09 |   b2882e3     | Release (-O3) |      1 | 100 |  189.35   | Multithreaded code ran with only one thread |
 | 2026-10-09 |   b2882e3     | Release (-O3) |      8 | 100 |  47.49    | First multithreaded run with 8 threads |
-| 2026-10-09 |         -     | Release (-O3) |      8 | 500 |  240.13   | Hero render with 8 thread run on 500spp  |
+| 2026-10-09 |   1e91eb7     | Release (-O3) |      8 | 500 |  240.13   | Hero render with 8 thread run on spp set to 500, uncommitted  |
 
 ## Experiments
 
