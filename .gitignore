@@ -1,0 +1,19 @@
+# personal scratch
+raytracernotes.md
+
+# C++ build
+/build/
+/build-debug/
+/bin
+*.o
+*.out
+
+# macOS
+.DS_Store
+
+# benchmark test
+bench/quick.csv
+
+
+#raw renderer output
+*.ppm
